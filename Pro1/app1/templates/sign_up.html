@@ -1,14 +1,24 @@
-{% extends 'app1/base.html' %}
+{% extends 'app1/templates/base.html' %}
 
 {% block content %}
-
+<center>
 <form action="" method="post">
     {% csrf_token %}
 
-    {{ form.as_p}}
+    <h1>  This  is SignUp  page </h1>
 
+    <label for="">Name</label>
+    <input type="text" name="first_name" id="" required><br></br>
+    <label for="">Email</label>
+    <input type="email" name="email" id=" " required><br></br>
+    <label for="">Password</label>
+    <input type="password" name="password1" id="" required><br></br>
+    <label for="">Comfirm  Password</label>
+    <input type="password" name="password2" id="" required><br></br>
+
+    <p> If you account <a href="login">Login</a></p>
     <input type="submit"  class="btn btn-success " value="SignUp">
 </form>
-
+</center>
 
 {% endblock %}

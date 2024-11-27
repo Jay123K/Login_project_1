@@ -2,51 +2,52 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
+from .validate import validate_password
 # Create your views here.
 
 def Sign_up(request):
     if request.method=="POST":
-        first_name=request.post.get('first_name')
-        email=request.post.get('email')
-        password1=request.post.get('password1')
-        password2=request.post.get('password2')
+        first_name=request.POST.get('first_name')
+        email=request.POST.get('email')
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
 
 
         user=User.objects.create(
             first_name=first_name,
-            email=email,
+            username=email,
         )
-        if password1 == password2:
+        if password1 == password2 and len(password1)==7 and validate_password:
             user.set_password(password1)
             user.save()
             return redirect('login')
         else:
-            messages.info("Both password should be same")
-            return redirect('siginUp')
+            messages.info(request,"Both password should be same")
+            return redirect('signUp')
 
-    return render(request,'templates/sign_up.html')
+    return render(request,'app1/templates/sign_up.html')
 
 
 
 def Login_page(request):
     if request.method=="POST":
-        email=request.post.get('email')
-        password=request.post.get('password')
+        email=request.POST.get('email')
+        password=request.POST.get('password')
 
         if not User.objects.filter(email=email).exists:
             return redirect('login')
     
-        user=authenticate(email=email,password=password)
+        user=authenticate(username=email,password=password)
         if user is None:
             return redirect('login')
         else:
             login(request,user)
-            return redirect ('home')
+            return redirect ('/')
 
     return render (request,'app1/templates/login_page.html')
 
 
 def Home(request):
-    return render(request,'templates/home.html')
+    return render(request,'app1/templates/home.html')
 
 
