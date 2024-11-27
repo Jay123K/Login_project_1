@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from .validate import validate_password
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def Sign_up(request):
@@ -12,6 +13,9 @@ def Sign_up(request):
         password1=request.POST.get('password1')
         password2=request.POST.get('password2')
 
+        if not User.objects.filter(username=email).exists():
+            messages.info("Email alreay exists")
+            return redirect('register')
 
         user=User.objects.create(
             first_name=first_name,
@@ -22,11 +26,15 @@ def Sign_up(request):
             user.save()
             return redirect('login')
         else:
-            messages.info(request,"Both password should be same")
+            messages.info(request,"Both password should be same and password should be 7 character.")
             return redirect('signUp')
 
     return render(request,'app1/templates/sign_up.html')
 
+
+def Logout_page(request):
+    logout(request)
+    return redirect(request,'login')
 
 
 def Login_page(request):
@@ -46,7 +54,7 @@ def Login_page(request):
 
     return render (request,'app1/templates/login_page.html')
 
-
+@login_required(login_url='login')
 def Home(request):
     return render(request,'app1/templates/home.html')
 
