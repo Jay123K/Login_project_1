@@ -2,23 +2,32 @@
 
 {% block content %}
 <center>
-<form action="" method="post">
-    {% csrf_token %}
+    <form action="" method="post">
+        {% csrf_token %}
 
-    <h1>  This  is SignUp  page </h1>
+        <h1> This is SignUp page </h1>
 
-    <label for="">Name</label>
-    <input type="text" name="first_name" id="" required><br></br>
-    <label for="">Email</label>
-    <input type="email" name="email" id=" " required><br></br>
-    <label for="">Password</label>
-    <input type="password" name="password1" id="" required><br></br>
-    <label for="">Comfirm  Password</label>
-    <input type="password" name="password2" id="" required><br></br>
+        {% if message %}
+        {{ message.tag }}
+        <div class="alert alert-primary" role="alert">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </div>
+        {% endif %}
 
-    <p> If you account <a href="login">Login</a></p>
-    <input type="submit"  class="btn btn-success " value="SignUp">
-</form>
+        <label for="">Name</label>
+        <input type="text" name="first_name" id="" required><br></br>
+        <label for="">Email</label>
+        <input type="email" name="email" id=" " required><br></br>
+        <label for="">Password</label>
+        <input type="password" name="password1" id="" required><br></br>
+        <label for="">Comfirm Password</label>
+        <input type="password" name="password2" id="" required><br></br>
+
+        <p> If you account <a href="login">Login</a></p>
+        <input type="submit" class="btn btn-success " value="SignUp">
+    </form>
 </center>
 
 {% endblock %}

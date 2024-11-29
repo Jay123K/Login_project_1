@@ -13,9 +13,10 @@ def Sign_up(request):
         password1=request.POST.get('password1')
         password2=request.POST.get('password2')
 
-        if not User.objects.filter(username=email).exists():
-            messages.info("Email alreay exists")
-            return redirect('register')
+        user= User.objects.filter(username=email)
+        if user.exists():
+            messages.info(request,"Email alreay exists")
+            return redirect('signUp')
 
         user=User.objects.create(
             first_name=first_name,
@@ -43,6 +44,7 @@ def Login_page(request):
         password=request.POST.get('password')
 
         if not User.objects.filter(email=email).exists:
+            messages.info(request,"Already  Exits")
             return redirect('login')
     
         user=authenticate(username=email,password=password)
@@ -53,6 +55,7 @@ def Login_page(request):
             return redirect ('/')
 
     return render (request,'app1/templates/login_page.html')
+
 
 @login_required(login_url='login')
 def Home(request):
